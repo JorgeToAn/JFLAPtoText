@@ -138,7 +138,7 @@ public class JFLAPtoTuple {
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < columns; j++) {
                 if(table[i][j] == -1) {
-                    table[i][j] = rows;
+                    table[i][j] = rows-1;
                 }
             }
         }
