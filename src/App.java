@@ -77,10 +77,14 @@ public class App extends JFrame implements ActionListener {
  
             if (r == JFileChooser.APPROVE_OPTION) {
 
-                if(JFLAPtoTuple.convert(j.getSelectedFile().getAbsolutePath())) {
-                    JOptionPane.showMessageDialog(j, "Se ha realizado la conversion exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(j, "No se pudo realizar la conversion.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                try {
+                    if(JFLAPtoTuple.convert(j.getSelectedFile().getAbsolutePath())) {
+                        JOptionPane.showMessageDialog(j, "Se ha realizado la conversion exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(j, "No se pudo realizar la conversion.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(j, "No se pudo realizar la conversion.\nExcepcion: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
