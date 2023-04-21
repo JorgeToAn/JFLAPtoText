@@ -23,7 +23,8 @@ public class JFLAPtoTuple {
                 NodeList nodeStates = doc.getElementsByTagName("state");
                 NodeList transitions = doc.getElementsByTagName("transition"); 
 
-                int statesCount = nodeStates.getLength();
+                // adds one more state as the trap state
+                int statesCount = nodeStates.getLength() + 1;
                 ArrayList<Integer> finalStates = getFinalStates(nodeStates);
                 ArrayList<Character> alphabet = getAlphabet(transitions);
                 int[][] table = createTranTable(nodeStates, alphabet, transitions);
@@ -98,7 +99,8 @@ public class JFLAPtoTuple {
     }
 
     private static int[][] createTranTable(NodeList states, ArrayList<Character> alphabet, NodeList transitions) {
-        int rows = states.getLength();
+        // we add a new row for the trap state
+        int rows = states.getLength() + 1;
         int columns = alphabet.size();
         int[][] table = new int[rows][columns];
 
@@ -136,7 +138,7 @@ public class JFLAPtoTuple {
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < columns; j++) {
                 if(table[i][j] == -1) {
-                    table[i][j] = states.getLength();
+                    table[i][j] = rows;
                 }
             }
         }
