@@ -7,8 +7,10 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;  
 import org.w3c.dom.Element;  
 import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.File;  
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class JFLAPtoTuple {
     public static boolean convert(String filepath) {
@@ -146,44 +148,45 @@ public class JFLAPtoTuple {
         return table;
     }
 
-    public static boolean writeToFile(String filepath, int states, ArrayList<Integer> finalStates, ArrayList<Character> alphabet, int[][] table) {
+    private static boolean writeToFile(String filepath, int states, ArrayList<Integer> finalStates, ArrayList<Character> alphabet, int[][] table) {
         String newFilepath = filepath.substring(0, filepath.lastIndexOf(".")).concat("_tuple.txt");
-        String finalStatesStr = "";
-        String alphabetStr = "";
-        String tableStr = "";
-
-        for(int i=0; i < finalStates.size()-1; i++) {
-            String state = finalStates.get(i).toString();
-            finalStatesStr += state + ",";
-        }
-        finalStatesStr += finalStates.get(finalStates.size()-1) + "\n";
-
-        for(int i=0; i < alphabet.size()-1; i++) {
-            String symbol = alphabet.get(i).toString();
-            alphabetStr += symbol + ",";
-        }
-        alphabetStr += alphabet.get(alphabet.size()-1) + "\n";
-
-        for(int i=0; i < table.length; i++) {
-            for(int j=0; j < table[0].length-1; j++) {
-                tableStr += table[i][j] + ",";
-            }
-            if(i != table.length-1) {
-                tableStr += table[i][table[0].length-1] + "\n";
-            } else {
-                tableStr += table[i][table[0].length-1];
-            }
-        }
 
         try {
-            FileWriter fw = new FileWriter(newFilepath);
-            fw.write(alphabetStr);
-            fw.write(states + "\n");
-            fw.write(finalStatesStr);
-            fw.write(tableStr);
+            FileWriter fw = new FileWriter(newFilepath, StandardCharsets.UTF_8);
+            BufferedWriter writer = new BufferedWriter(fw);
+            for(int i=0; i < alphabet.size()-1; i++) {
+                String symbol = alphabet.get(i).toString();
+                writer.write(symbol + ",");
+            }
+            writer.write(alphabet.get(alphabet.size()-1).toString());
+            writer.newLine();
+            
+            writer.write(Integer.toString(states));
+            writer.newLine();
+
+            for(int i=0; i < finalStates.size()-1; i++) {
+                String state = finalStates.get(i).toString();
+                writer.write(state + ",");
+            }
+            writer.write(finalStates.get(finalStates.size()-1).toString());
+            writer.newLine();
+
+            for(int i=0; i < table.length; i++) {
+                for(int j=0; j < table[0].length-1; j++) {
+                    writer.write(Integer.toString(table[i][j]) + ",");
+                }
+                if(i != table.length-1) {
+                    writer.write(Integer.toString(table[i][table[0].length-1]));
+                    writer.newLine();
+                } else {
+                    writer.write(Integer.toString(table[i][table[0].length-1]));
+                }
+            }
+
+            writer.close();
             fw.close();
             return true;
-        } catch (IOException e) {
+        } catch(IOException e) {
             System.out.println(e);
             return false;
         }
