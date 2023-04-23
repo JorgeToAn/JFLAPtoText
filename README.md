@@ -1,4 +1,4 @@
-# Conversor JFLAP a archivo texto v.1.0
+# Conversor JFLAP a archivo texto v.1.1
 Descarga el archivo ejecutable .jar para empezar a convertir tus automatas de JFLAP en archivos de texto en siguiente formato:
 
 1. Primer renglon sera el alfabeto, cada simbolo es separado por una coma.
